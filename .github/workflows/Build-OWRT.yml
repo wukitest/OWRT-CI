@@ -78,7 +78,7 @@ jobs:
       - name: Update Feeds
         run: |
           cd ./owrt/
-
+          echo "src-git nikki https://github.com/nikkinikki-org/OpenWrt-nikki.git;main" >> "feeds.conf.default"
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
@@ -106,7 +106,7 @@ jobs:
           cp -f ./.config ./upload/config-"$OWRT_HASH".txt
           echo "OWRT_KVER=$(find ./bin/targets/ -type f -name "*.manifest" -exec grep -oP '^kernel - \K[\d\.]+' {} \;)" >> $GITHUB_ENV
           echo "OWRT_LIST=$(find ./bin/targets/ -type f -name "*.manifest" -exec grep -oP '^luci-(app|theme)[^ ]*' {} \; | tr '\n' ' ')" >> $GITHUB_ENV
-          find ./bin/targets/ -iregex ".*\(buildinfo\|json\|packages\)$" -exec rm -rf {} +
+          ls -a ./bin/targets/
           find ./bin/targets/ -type f -exec mv -f {} ./upload/ \;
           make clean -j$(nproc)
 
